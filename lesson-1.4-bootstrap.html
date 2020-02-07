@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+    <title>Data Binding Example</title>
+</head>
+
+<body>
+    <div id="app">
+        <div class="container">
+            <form v-if="!submitted" class="mt-5" action="">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" v-model="email" class="form-control form-control-large" id="">
+                </div>
+                <button type="submit" @click.prevent="process" class="btn btn-primary">Submit</button>
+            </form>
+            <h2 v-else v-cloak>Thank you for signing up!</h2>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            email: 'mike@example.com',
+            submitted: false
+        },
+        methods: {
+            process: function () {
+                this.submitted = true
+
+            }
+        }
+    })
+</script>
+
+</html>

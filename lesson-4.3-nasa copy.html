@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+    <title>NASA Slots Example</title>
+</head>
+
+<body>
+    <div id="app">
+        <div class="container">
+            <a-pod>
+                <h3 slot="title">#1</h3>
+                <p slot="caption">Here's today APoD!</p>
+            </a-pod>
+            <br>
+            <br>
+            <a-pod date="2019-02-04">
+                <h3 slot="title">#2</h3>
+                <p slot="caption" slot-scope="pic">Here's the picture from {{pic.date}}</p>
+            </a-pod>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
+<script>
+    Vue.component('a-pod', {
+        template: '<div> \
+                    <slot name="title"><h3>Untitled</h3></slot> \
+                    <img width="300" height="200" :src="imgSrc" :title="imgTitle"> \
+                    <slot name="caption" :date="date"><p>unknown date</p></slot> \
+                   </div>',
+        props: ['date'],
+        data: function () {
+            return {
+                imgSrc: '',
+                imgTitle: ''
+            }
+        },
+        created: function () {
+            this.fetchApod()
+            this.fetchAsteroid()
+        },
+        methods: {
+            fetchApod: function () {
+                var apiKey = 'DEMO_KEY'
+                var url = 'https://api.nasa.gov/planetary/apod?api_key=' + apiKey
+                if (this.date) {
+                    url += '&date=' + this.date;
+                }
+                var self = this;
+                axios.get(url).then(res => {
+                    self.imgSrc = res.data.url
+                    self.imgTitle = res.data.title
+                })
+            },
+            fetchAsteroid: function () {
+                var apiKey = 'DEMO_KEY'
+                var url = 'https://api.nasa.gov/neo/rest/v1/neo/browse?api_key=' + apiKey
+                axios.get(url).then(res => {
+                    console.log(res)
+                })
+            }
+        }
+    })
+    var vm = new Vue({
+        el: '#app',
+    })
+</script>
+
+</html>
